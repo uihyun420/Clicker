@@ -3077,6 +3077,7 @@ GameObject:
   - component: {fileID: 877947616}
   - component: {fileID: 877947615}
   - component: {fileID: 877947617}
+  - component: {fileID: 877947618}
   m_Layer: 0
   m_Name: FireBaseInitializer
   m_TagString: Untagged
@@ -3121,6 +3122,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f8cc1959199109142987505773bb0fd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &877947618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 877947614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 829a6db5d6956854faa7732df6d3caf7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &903056902
