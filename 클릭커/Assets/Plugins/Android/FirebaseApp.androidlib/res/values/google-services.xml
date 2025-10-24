@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:keep="@string/firebase_database_url,@string/gcm_defaultSenderId,@string/google_storage_bucket,@string/project_id,@string/google_api_key,@string/google_crash_reporting_api_key,@string/google_app_id">
+  <string name="firebase_database_url" translatable="false">https://fir-study-12f2d-default-rtdb.asia-southeast1.firebasedatabase.app</string>
+  <string name="gcm_defaultSenderId" translatable="false">355114104065</string>
+  <string name="google_storage_bucket" translatable="false">fir-study-12f2d.firebasestorage.app</string>
+  <string name="project_id" translatable="false">fir-study-12f2d</string>
+  <string name="google_api_key" translatable="false">AIzaSyCOondlNnf-fB_JKDjPeoJL9Y6O7DwLghk</string>
+  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCOondlNnf-fB_JKDjPeoJL9Y6O7DwLghk</string>
+  <string name="google_app_id" translatable="false">1:355114104065:android:b8b7b87d53599762b99700</string>
+</resources>
