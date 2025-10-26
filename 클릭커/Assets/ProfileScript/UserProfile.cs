@@ -9,7 +9,6 @@ public class UserProfile
 
     public UserProfile()
     {
-
     }
     public UserProfile(string nickname, string email)
     {

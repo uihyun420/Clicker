@@ -538,6 +538,7 @@ GameObject:
   - component: {fileID: 86812820}
   - component: {fileID: 86812822}
   - component: {fileID: 86812821}
+  - component: {fileID: 86812823}
   m_Layer: 5
   m_Name: NickNameChangerUi
   m_TagString: Untagged
@@ -603,6 +604,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 86812819}
   m_CullTransparentMesh: 1
+--- !u!114 &86812823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 86812819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30d41fedcf9251c4cb8a4baa28bbfaad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nicknameInputField: {fileID: 1190925091}
+  saveButton: {fileID: 1745396246}
+  closeButton: {fileID: 1044925504}
+  currnetNickNameText: {fileID: 1188889601}
+  profileUi: {fileID: 282448988}
 --- !u!1 &101304423
 GameObject:
   m_ObjectHideFlags: 0
@@ -1484,13 +1502,14 @@ GameObject:
   - component: {fileID: 282448985}
   - component: {fileID: 282448987}
   - component: {fileID: 282448986}
+  - component: {fileID: 282448988}
   m_Layer: 5
   m_Name: ProfileUi
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &282448985
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1549,6 +1568,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 282448984}
   m_CullTransparentMesh: 1
+--- !u!114 &282448988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 282448984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb13b13a6e33aed4f97bd967900bb292, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loginUi: {fileID: 1717195465}
+  nickNameChangerUi: {fileID: 86812823}
+  nickNameEditButton: {fileID: 101304425}
+  logOutButton: {fileID: 1050930677}
+  CloseButton: {fileID: 184513736}
+  nickNameText: {fileID: 365390348}
+  userIdText: {fileID: 1637181970}
 --- !u!1 &325993640
 GameObject:
   m_ObjectHideFlags: 0
@@ -3482,13 +3520,14 @@ GameObject:
   - component: {fileID: 966704335}
   - component: {fileID: 966704337}
   - component: {fileID: 966704336}
+  - component: {fileID: 966704338}
   m_Layer: 5
   m_Name: NickNameSetUi
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &966704335
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3547,6 +3586,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 966704334}
   m_CullTransparentMesh: 1
+--- !u!114 &966704338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 966704334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba10496df4dd7c44cbfbd4f384683aaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nicknameInputField: {fileID: 923876291}
+  saveButton: {fileID: 187707359}
+  profileUi: {fileID: 282448988}
 --- !u!1 &979576515
 GameObject:
   m_ObjectHideFlags: 0
@@ -6770,8 +6824,8 @@ RectTransform:
   - {fileID: 1464552006}
   - {fileID: 979576516}
   - {fileID: 282448985}
-  - {fileID: 86812820}
   - {fileID: 966704335}
+  - {fileID: 86812820}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -6792,6 +6846,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loginPanel: {fileID: 1464552005}
+  profileUi: {fileID: 282448988}
+  nickNameSetUi: {fileID: 966704338}
   anonyButton: {fileID: 1531067127}
   logInButton: {fileID: 544933020}
   signUpButton: {fileID: 1734514578}

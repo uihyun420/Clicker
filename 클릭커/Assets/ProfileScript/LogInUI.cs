@@ -11,6 +11,9 @@ public class LogInUI : MonoBehaviour
 {
     public GameObject loginPanel;
 
+    [SerializeField] private ProfileUi profileUi;
+    [SerializeField] private NickNameSetUi nickNameSetUi;
+
     [SerializeField] private Button anonyButton;
     [SerializeField] private Button logInButton;
     [SerializeField] private Button signUpButton;
@@ -96,7 +99,7 @@ public class LogInUI : MonoBehaviour
         }
         SetButtonsInteractable(true);
         UpdateUI().Forget();
-
+        nickNameSetUi.gameObject.SetActive(true);
     }
     private async UniTaskVoid OnSignUpButtonClicked()
     {
