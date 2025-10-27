@@ -48,7 +48,7 @@ public class ProfileUi : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public async UniTaskVoid SetTextNickNameText()
+    public async UniTask SetTextNickNameText()
     {
         // AuthManager 초기화 대기
         await UniTask.WaitUntil(() => AuthManager.Instance != null && AuthManager.Instance.IsInitialized);

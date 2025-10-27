@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class ScoreData : MonoBehaviour
+public class ScoreData
 {
     public int score;
     public long timestamp;

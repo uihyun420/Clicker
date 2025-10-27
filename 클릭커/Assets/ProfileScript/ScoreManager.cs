@@ -142,7 +142,7 @@ public class ScoreManager : MonoBehaviour
         try
         {
             Debug.LogError("[Score] 히스토리 로드 시도");
-            DatabaseReference historyRef = scoresRef.Child(uid).Child("histroy");
+            DatabaseReference historyRef = scoresRef.Child(uid).Child("history");
             Query query = historyRef.OrderByChild("timestamp").LimitToLast(limit); // 뒤에서부터 10개 
             
             DataSnapshot snapshot = await query.GetValueAsync().AsUniTask();

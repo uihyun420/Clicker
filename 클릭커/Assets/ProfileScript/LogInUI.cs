@@ -6,6 +6,7 @@ using Firebase.Auth;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks.CompilerServices;
+using System.Text;
 
 public class LogInUI : MonoBehaviour
 {
@@ -17,12 +18,17 @@ public class LogInUI : MonoBehaviour
     [SerializeField] private Button anonyButton;
     [SerializeField] private Button logInButton;
     [SerializeField] private Button signUpButton;
+    [SerializeField] private Button closeButton;
+
+    [SerializeField] private Button recordButton;
+    [SerializeField] private Button readerBoardButton;
+
+    [SerializeField] private Button GameOverRecordButton;
+    [SerializeField] private Button GameOverReaderBoardButton;
 
     [SerializeField] private TMP_InputField emailInput;
     [SerializeField] private TMP_InputField passwordInput;
-
-    [SerializeField] private TextMeshProUGUI errorText;
-
+    [SerializeField] private ScoreRecordUi scoreRecordUi;
 
     public Button profileButton;
     public TextMeshProUGUI profileText;
@@ -36,7 +42,10 @@ public class LogInUI : MonoBehaviour
         anonyButton.onClick.AddListener(() => OnAnonyButtonClicked().Forget());
         logInButton.onClick.AddListener(() => OnlogInButtonClicked().Forget());
         signUpButton.onClick.AddListener(() => OnSignUpButtonClicked().Forget());
-        profileButton.onClick.AddListener(() => { AuthManager.Instance.SignOut(); UpdateUI().Forget(); });
+        profileButton.onClick.AddListener(() => OnProfileButtonClicked().Forget());
+        closeButton.onClick.AddListener(() => OnCloseButtonClicked());
+        recordButton.onClick.AddListener(() => OnRecordButtonClicked().Forget());
+        GameOverRecordButton.onClick.AddListener(() => OnRecordButtonClicked().Forget());
         SetButtonsInteractable(true);
 
         UpdateUI().Forget();
@@ -52,36 +61,60 @@ public class LogInUI : MonoBehaviour
         if (success)
         {
         }
-        else
-        {
-            ShowError(error);
-        }
         SetButtonsInteractable(true);
         UpdateUI().Forget();
     }
 
     public async UniTaskVoid UpdateUI()
     {
-        if( AuthManager.Instance == null && !AuthManager.Instance.IsInitialized)
+        if (AuthManager.Instance == null || !AuthManager.Instance.IsInitialized)
         {
             return;
         }
+
         bool isLoggedIn = AuthManager.Instance.IsLoggedIn;
         loginPanel.SetActive(!isLoggedIn);
 
-        if(isLoggedIn)
+        if (isLoggedIn)
         {
-            string userId = AuthManager.Instance.UserId;
-            profileText.text = userId;
+            // 캐시된 프로필이 없으면 로드 시도
+            if (ProfileManager.Instance.CachedProfile == null)
+            {
+                var (profile, error) = await ProfileManager.Instance.LoadProfileAsync("");
+                if (profile == null)
+                {
+                    var sb = new StringBuilder();
+                    sb.Clear();
+                    sb.Append("닉네임 없음");
+                    profileText.text = sb.ToString();
+                    return;
+                }
+            }
+
+            // 이제 캐시된 프로필이 있는지 확인하고 닉네임 표시
+            if (ProfileManager.Instance.CachedProfile != null && !string.IsNullOrEmpty(ProfileManager.Instance.CachedProfile.nickname))
+            {
+                var sb = new StringBuilder();
+                sb.Clear();
+                sb.Append(ProfileManager.Instance.CachedProfile.nickname);
+                profileText.text = sb.ToString();
+            }
+            else
+            {
+                var sb = new StringBuilder();
+                sb.Clear();
+                sb.Append("닉네임 미설정");
+                profileText.text = sb.ToString();
+            }
         }
         else
         {
-            profileText.text = string.Empty;
+            var sb = new StringBuilder();
+            sb.Clear();
+            sb.Append("닉네임 없음");
+            profileText.text = sb.ToString();
         }
-
-        errorText.text = string.Empty;
     }
-
     private async UniTaskVoid OnlogInButtonClicked()
     {
         string emailText = emailInput.text;
@@ -92,14 +125,16 @@ public class LogInUI : MonoBehaviour
         var (success, error) = await AuthManager.Instance.SignInWithEmailAsync(emailText, passwordText);
         if(success)
         {
-        }
-        else
-        {
-            ShowError(error);
+            await ProfileManager.Instance.LoadProfileAsync("");
+
+            if(ProfileManager.Instance.CachedProfile == null || string.IsNullOrEmpty(ProfileManager.Instance.CachedProfile.nickname))
+            {
+                nickNameSetUi.gameObject.SetActive(true);
+            }
         }
         SetButtonsInteractable(true);
         UpdateUI().Forget();
-        nickNameSetUi.gameObject.SetActive(true);
+        
     }
     private async UniTaskVoid OnSignUpButtonClicked()
     {
@@ -110,19 +145,10 @@ public class LogInUI : MonoBehaviour
         var (success, error) = await AuthManager.Instance.CreateUserWithEmailAsync(emailText, passwordText);
         if (success)
         {
-        }
-        else
-        {
-            ShowError(error);
+            nickNameSetUi.gameObject.SetActive(true);
         }
         SetButtonsInteractable(true);
         UpdateUI().Forget();
-    }
-
-    private void ShowError(string message)
-    {
-        errorText.text= message;
-        errorText.color = Color.red;
     }
 
     private void SetButtonsInteractable(bool b )
@@ -131,4 +157,29 @@ public class LogInUI : MonoBehaviour
         signUpButton.interactable= b;
         anonyButton.interactable= b;
     }
+
+    private async UniTaskVoid OnProfileButtonClicked()
+    {
+        await profileUi.SetTextNickNameText();
+
+        if(AuthManager.Instance.IsLoggedIn)
+        {
+            profileUi.gameObject.SetActive(true);
+        }
+        else
+        {
+            Debug.Log("로그인이 되지 않았습니다.");
+        }
+    }
+
+    private void OnCloseButtonClicked()
+    {
+        loginPanel.gameObject.SetActive(true);
+    }
+
+    private async UniTaskVoid OnRecordButtonClicked()
+    {        
+        scoreRecordUi.gameObject.SetActive(true);   
+    }
+    
 }

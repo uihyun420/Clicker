@@ -10,6 +10,7 @@ public class ProfileManager : MonoBehaviour
     public static ProfileManager Instance => instance;
 
     private DatabaseReference databaseRef;
+
     private DatabaseReference usersRef;
 
     private UserProfile cachedProfile;

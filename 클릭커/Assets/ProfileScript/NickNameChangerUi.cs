@@ -15,6 +15,9 @@ public class NickNameChangerUi : MonoBehaviour
     [SerializeField] private Button closeButton;
     [SerializeField] private TextMeshProUGUI currnetNickNameText;
     [SerializeField] private ProfileUi profileUi;
+    [SerializeField] private LogInUI loginUi;
+
+    [SerializeField] private TextMeshProUGUI currentNickNameText;
 
     private void Start()
     {
@@ -61,6 +64,11 @@ public class NickNameChangerUi : MonoBehaviour
             profileUi.SetTextNickNameText().Forget();
         }
 
+        if(loginUi != null)
+        {
+            loginUi.UpdateUI().Forget();
+        }
+
         gameObject.SetActive(false);
         SetButtonsInteractable(true);
     }
@@ -82,10 +90,13 @@ public class NickNameChangerUi : MonoBehaviour
             if (string.IsNullOrEmpty(currentNickname))
             {
                 currnetNickNameText.text = "닉네임 미설정";
+                currentNickNameText.text = "닉네임 미설정";
+
             }
             else
             {
                 currnetNickNameText.text = $"현재 닉네임: {currentNickname}";
+                currentNickNameText.text = currentNickname;
             }
         }
     }

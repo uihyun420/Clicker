@@ -14,6 +14,8 @@ public class NickNameSetUi : MonoBehaviour
     [SerializeField] private Button saveButton;
     [SerializeField] private ProfileUi profileUi;
 
+    [SerializeField] private LogInUI loginUi;
+
     private void Start()
     {
         saveButton.onClick.AddListener(() => OnSaveButtonClicked().Forget());
@@ -48,12 +50,17 @@ public class NickNameSetUi : MonoBehaviour
             {
                 profileUi.SetTextNickNameText().Forget();
             }
+
+            if (loginUi != null)
+            {
+                loginUi.UpdateUI().Forget();
+            }
             gameObject.SetActive(false);
             profileUi.gameObject.SetActive(true);
         }
         else
         {
-            // 실패해도 창은 닫지 않고 다시 시도할 수 있게 함
+            Debug.LogError($"[NickNameSet] 프로필 생성 실패: {error}");
             SetButtonsInteractable(true);
         }
     }

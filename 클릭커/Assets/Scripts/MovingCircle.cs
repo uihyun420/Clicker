@@ -25,6 +25,19 @@ public class MovingCircle : MonoBehaviour
     public Button endButton;
     public TextMeshProUGUI finalScoreText;
 
+    public GameObject recordScoreItemPrefab; // 프리팹 참조
+    public Transform recordParent; // 프리팹이 생성될 부모 Transform
+    [SerializeField] private ScoreRecordUi ScoreRecordUi;
+    [SerializeField] private ReaderBoardUi readerBoardUi;
+
+
+    [SerializeField] private Button readerBoardButton;
+    [SerializeField] private Button gameOverReaderBoardButton;
+
+    [SerializeField] private GameObject readerBoardPrefab;
+    [SerializeField] private Transform readerBoardParent; 
+    [SerializeField] ScrollRect scrollRect;
+
     private void Awake()
     {
         circleRect = Circle.GetComponent<RectTransform>();
@@ -44,6 +57,13 @@ public class MovingCircle : MonoBehaviour
             scoreText.text = "점수 : " + currentScore.ToString();
             timerText.text = "시간 : " + timer.ToString();
         });
+
+        if(readerBoardButton != null)
+        {
+            readerBoardButton.onClick.AddListener(() => OnReaderBoardButtonClicked().Forget());
+            gameOverReaderBoardButton.onClick.AddListener(() => OnReaderBoardButtonClicked().Forget());
+        }
+
     }
 
     private void OnDisable()
@@ -74,7 +94,7 @@ public class MovingCircle : MonoBehaviour
         scoreText.text = "점수 : " + currentScore.ToString();
     }
 
-    private async UniTask UpdateMove()
+    public async UniTask UpdateMove()
     {
         cancellationTokenSource?.Cancel();
         cancellationTokenSource?.Dispose();
@@ -90,9 +110,82 @@ public class MovingCircle : MonoBehaviour
                 cancellationTokenSource.Cancel();
                 timerText.text = "시간 종료!";
                 finalScoreText.text = "점수 : " + currentScore.ToString();
+                var (success, error) = await ScoreManager.Instance.SaveScoreAsync(currentScore);
+                if(success)
+                {
+                    ScoreRecordUi.gameObject.SetActive(true);   
+                    CreateScoreRecord(currentScore);
+                }
+                else 
+                {
+                    Debug.Log("점수 저장 실패");
+                }
                 endUI.SetActive(true);
             }
         }
     }
 
+    private void CreateScoreRecord(int score)
+    {
+        if(recordScoreItemPrefab != null && recordParent != null)
+        {
+            GameObject newRecord = Instantiate(recordScoreItemPrefab, recordParent);
+            RecordScoreItem recordItem = newRecord.GetComponent<RecordScoreItem>();
+            if(recordItem != null)
+            {
+                recordItem.SetScoreData(score);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("RecordScoreItemPrefab 또는 RecordParent가 설정되지 않았습니다.");
+        }
+    }
+
+
+    private async UniTaskVoid OnReaderBoardButtonClicked()
+    {
+        await CreativeReaderBoardAysnc();
+    }
+
+    private async UniTask CreativeReaderBoardAysnc()
+    {
+        if(readerBoardPrefab != null && readerBoardParent != null)
+        {
+            foreach(Transform child in readerBoardParent)
+            {
+                Destroy(child.gameObject);
+            }
+
+            if(ProfileManager.Instance.CachedProfile != null)
+            {
+                GameObject newItem = Instantiate(readerBoardPrefab, readerBoardParent);
+                ReaderBoardItem readerBoardItem = newItem.GetComponent<ReaderBoardItem>();
+
+                if(readerBoardItem != null)
+                {
+                    string nickname = ProfileManager.Instance.CachedProfile.nickname;
+                    int bestScore = ScoreManager.Instance.CachedBestScore;
+                    await readerBoardItem.SetText(nickname, bestScore);
+                }
+                else
+                {
+                    Debug.LogWarning("ReaderBoardItem 컴포넌트를 찾을 수 없습니다.");
+                }
+            }
+            else
+            {
+                Debug.LogWarning("사용자 프로필이 없습니다.");
+            }
+            if(readerBoardUi != null)
+            {
+                readerBoardUi.gameObject.SetActive(true);
+            }
+
+        }
+        else
+        {
+            Debug.LogWarning("readerBoardPrefab 또는 readerBoardParent가 설정되지 않았습니다.");
+        }
+    }
 }
