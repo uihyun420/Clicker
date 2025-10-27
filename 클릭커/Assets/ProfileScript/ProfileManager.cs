@@ -23,7 +23,6 @@ public class ProfileManager : MonoBehaviour
         }
         else
         {
-
         }
     }
 

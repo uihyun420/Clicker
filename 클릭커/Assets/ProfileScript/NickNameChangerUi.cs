@@ -14,12 +14,10 @@ public class NickNameChangerUi : MonoBehaviour
     [SerializeField] private Button saveButton;
     [SerializeField] private Button closeButton;
     [SerializeField] private TextMeshProUGUI currnetNickNameText;
-
     [SerializeField] private ProfileUi profileUi;
 
     private void Start()
     {
-        // 버튼 이벤트 연결
         saveButton.onClick.AddListener(() => OnSaveButtonClicked().Forget());
         closeButton.onClick.AddListener(OnCloseButtonClicked);
 
@@ -29,8 +27,6 @@ public class NickNameChangerUi : MonoBehaviour
     private void OnEnable()
     {
         nicknameInputField.text = string.Empty;
-        nicknameInputField.Select(); // 입력 필드에 포커스
-
         SetCurrnetNickNameText();
     }
 
@@ -93,7 +89,6 @@ public class NickNameChangerUi : MonoBehaviour
             }
         }
     }
-
     private void OnCloseButtonClicked()
     {
         gameObject.SetActive(false);

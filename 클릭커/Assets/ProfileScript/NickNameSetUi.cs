@@ -12,20 +12,17 @@ public class NickNameSetUi : MonoBehaviour
 {
     [SerializeField] private TMP_InputField nicknameInputField;
     [SerializeField] private Button saveButton;
-
     [SerializeField] private ProfileUi profileUi;
 
     private void Start()
     {
         saveButton.onClick.AddListener(() => OnSaveButtonClicked().Forget());
-
         gameObject.SetActive(false);
     }
 
     private void OnEnable()
     {
         nicknameInputField.text = string.Empty;
-        nicknameInputField.Select(); // 입력 필드에 포커스
     }
 
     private async UniTaskVoid OnSaveButtonClicked()
@@ -39,7 +36,7 @@ public class NickNameSetUi : MonoBehaviour
 
         SetButtonsInteractable(false);
 
-        // 첫 프로필 생성 (항상 새로 생성)
+        // 첫 프로필 생성 
         var (success, error) = await ProfileManager.Instance.SaveProfileAsync(newNickName);
 
         if (success)
