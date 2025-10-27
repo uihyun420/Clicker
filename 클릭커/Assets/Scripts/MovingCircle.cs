@@ -110,16 +110,14 @@ public class MovingCircle : MonoBehaviour
                 cancellationTokenSource.Cancel();
                 timerText.text = "시간 종료!";
                 finalScoreText.text = "점수 : " + currentScore.ToString();
+
+                // 점수만 저장하고 UI는 별도로 처리
                 var (success, error) = await ScoreManager.Instance.SaveScoreAsync(currentScore);
-                if(success)
+                if (!success)
                 {
-                    ScoreRecordUi.gameObject.SetActive(true);   
-                    CreateScoreRecord(currentScore);
+                    Debug.LogError($"점수 저장 실패: {error}");
                 }
-                else 
-                {
-                    Debug.Log("점수 저장 실패");
-                }
+
                 endUI.SetActive(true);
             }
         }

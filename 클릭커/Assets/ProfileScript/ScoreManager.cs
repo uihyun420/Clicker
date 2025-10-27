@@ -141,7 +141,6 @@ public class ScoreManager : MonoBehaviour
         string uid = AuthManager.Instance.UserId;
         try
         {
-            Debug.LogError("[Score] 히스토리 로드 시도");
             DatabaseReference historyRef = scoresRef.Child(uid).Child("history");
             Query query = historyRef.OrderByChild("timestamp").LimitToLast(limit); // 뒤에서부터 10개 
             
@@ -155,7 +154,7 @@ public class ScoreManager : MonoBehaviour
                     list.Add(data);
                 }
             }          
-            Debug.LogError($"[Score] 히스토리 로드 성공 : {list.Count}개");
+            Debug.Log($"[Score] 히스토리 로드 성공 : {list.Count}개");
             list.Reverse();
             return list;
         }

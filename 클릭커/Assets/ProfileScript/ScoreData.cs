@@ -20,7 +20,16 @@ public class ScoreData
 
     public DateTime GetDateTime()
     {
-        return DateTimeOffset.FromUnixTimeSeconds(timestamp).LocalDateTime;
+        try
+        {
+            return DateTimeOffset.FromUnixTimeMilliseconds(timestamp).LocalDateTime;
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            // 잘못된 timestamp 값인 경우 현재 시간 반환
+            Debug.LogWarning($"잘못된 timestamp 값: {timestamp}. 현재 시간을 사용합니다.");
+            return DateTime.Now;
+        }
     }
 
     public string GetDateString()

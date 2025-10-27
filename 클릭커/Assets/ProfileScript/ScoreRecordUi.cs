@@ -104,16 +104,30 @@ public class ScoreRecordUi : MonoBehaviour
     {
         if (recordPrefab == null || recordParent == null)
         {
-            Debug.LogError("[ScoreRecordUi] recordPrefab 또는 recordParent가 null입니다.");
             return;
         }
-
+        if (scoreData == null)
+        {
+            return;
+        }
+        try
+        {
+            var dateTime = scoreData.GetDateTime();
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError($"[ScoreRecordUi] DateTime 변환 실패: {ex.Message}");
+            return;
+        }
         GameObject recordItem = Instantiate(recordPrefab, recordParent);
         RecordScoreItem scoreItem = recordItem.GetComponent<RecordScoreItem>();
-
-        if(scoreItem != null)
+        if (scoreItem != null)
         {
             scoreItem.SetScoreData(scoreData);
+        }
+        else
+        {
+            Debug.LogError("[ScoreRecordUi] RecordScoreItem 컴포넌트를 찾을 수 없습니다.");
         }
         recordItems.Add(recordItem);
     }
